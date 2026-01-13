@@ -23,25 +23,52 @@ function dedupeSources(results) {
 
 export async function compareHandler(req, res){
   try {
-    const { question, product, policyType, history } = req.body;
+    const { question} = req.body;
 
-    if (!question || !product || !policyType) {
+    if (!question) {
       return res.status(400).json({
-        error: "question, product and policyType are required",
+        error: "question required"
       });
     }
 
-    const results = {};
+    const extractPrompt = `
+      Extract insurance companies and product type from this query.
 
-    for (const company of COMPANIES) {
+      Query: ${question}
+
+      Respond in JSON:
+      {
+        "companies": ["ACKO", "HDFCERGO"],
+        "product": "PRIVATE_CAR",
+        "policyType": "BUNDLED_POLICY"
+      }
+    `;
+
+    const extracted = await askLLM({
+      system: "You extract structured filters from user questions.",
+      user: extractPrompt
+    });
+
+    let filters;
+
+    try {
+      filters = JSON.parse(extracted);
+    } catch {
+      return res.json({ answer: "Could not detect insurers to compare." });
+    }
+
+
+    const answers = {};
+
+    for (const company of filters.companies) {
       // ---- BASE SEARCH
       let baseResults = await searchVectors({
         query: question,
         company,
-        product,
-        policyType,
+        product: filters.product,
+        policyType: filters.policyType,
         policyClass: "BASE",
-        topK: 5,
+        topK: 6,
       });
 
       baseResults = baseResults.map(r => ({
@@ -50,24 +77,24 @@ export async function compareHandler(req, res){
       }));
 
       // ---- ADDON SEARCH if needed
-      if (question.toLowerCase().includes("engine")) {
-        const addonResults = await searchVectors({
-          query: question,
-          company,
-          product,
-          policyType,
-          policyClass: "ADDON",
-          addonType: "ENGINE_PROTECT",
-          topK: 5,
-        });
+      // if (question.toLowerCase().includes("engine")) {
+      //   const addonResults = await searchVectors({
+      //     query: question,
+      //     company,
+      //     product: filters.product,
+      //     policyType: filters.policyType,
+      //     policyClass: "ADDON",
+      //     addonType: "ENGINE_PROTECT",
+      //     topK: 5,
+      //   });
 
-        const parsedAddon = addonResults.map(r => ({
-          ...r,
-          metadata: typeof r.metadata === "string" ? JSON.parse(r.metadata) : r.metadata
-        }));
+      //   const parsedAddon = addonResults.map(r => ({
+      //     ...r,
+      //     metadata: typeof r.metadata === "string" ? JSON.parse(r.metadata) : r.metadata
+      //   }));
 
-        baseResults = [...parsedAddon, ...baseResults];
-      }
+      //   baseResults = [...parsedAddon, ...baseResults];
+      // }
 
       if (!baseResults.length) {
         results[company] = {
@@ -80,8 +107,8 @@ export async function compareHandler(req, res){
       const prompt = buildPolicyCompPrompt(question, baseResults);
       const answer = await askLLM(prompt);
 
-      results[company] = {
-        answer,
+      answers[company] = {
+        answer: answer,
         sources: dedupeSources(baseResults),
       };
     }

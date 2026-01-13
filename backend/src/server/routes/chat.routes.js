@@ -10,8 +10,19 @@ let lastContext = null;
 async function detectIntent(question) {
   const q = question.toLowerCase();
 
-  if (q.includes("compare")) return "COMPARE";
-  if (q.includes("improve") || q.includes("profit") || q.includes("design"))
+  if (
+    q.includes("compare") ||
+    q.includes("difference between") ||
+    q.includes("vs") ||
+    q.includes("which is better")
+  ) return "COMPARE";
+  if (
+    q.includes("improve") ||
+    q.includes("profit") || 
+    q.includes("design better") ||
+    q.includes("suggest") ||
+    q.includes("pricing")
+  )
     return "IMPROVE";
   if (q.includes("covered") || q.includes("policy") || q.includes("claim"))
     return "RAG";
