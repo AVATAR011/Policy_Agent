@@ -4,6 +4,8 @@ import { compareHandler } from "./compare.routes.js";
 import { improveHandler } from "./improve.routes.js";
 
 const router = express.Router();
+let lastContext = null;
+
 
 async function detectIntent(question) {
   const q = question.toLowerCase();
@@ -55,6 +57,14 @@ router.post("/", async (req, res) => {
     }
 
     const lastUserMsg = messages[messages.length - 1].content;
+    const prevUserMsgs = messages
+      .slice(0, -1)
+      .filter(m => m.role === "user")
+      .map(m => m.content);
+
+    const previousTopic = prevUserMsgs.length
+      ? prevUserMsgs[prevUserMsgs.length - 1]
+      : null;
     const intent = detectIntent(lastUserMsg);
 
 
@@ -63,9 +73,15 @@ router.post("/", async (req, res) => {
 
     const { product, policyType } = inferBaseFilters(lastUserMsg);
     // Fake req/res wrappers to reuse existing handlers
+    let effectiveQuestion = lastUserMsg;
+
+    // If user says "compare", attach previous topic
+    if (intent === "COMPARE" && previousTopic) {
+      effectiveQuestion = `Compare insurers regarding: ${previousTopic}`;
+    }
     const fakeReq = {
         body: {
-            question: lastUserMsg,
+            question:  effectiveQuestion,
             chatHistory: messages.slice(0,-1),
             product,
             policyType

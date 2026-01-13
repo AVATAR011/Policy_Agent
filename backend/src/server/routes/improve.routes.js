@@ -56,31 +56,33 @@ export async function improveHandler(req, res){
     `;
 
     // --- LLM PROMPT ---
-    const answer = await askLLM({
-      system: "You are an insurance product analyst helping insurers improve policies.",
-      user: `
-    Analyze the following motor insurance product.
+    const prompt = `
+      You are an insurance product analyst helping insurers improve policies.
 
-    Company: ${company}
-    Product: ${product}
-    Policy Type: ${policyType}
+      Analyze the following motor insurance product.
 
-    Answer in this format:
+      Company: ${company}
+      Product: ${product}
+      Policy Type: ${policyType}
 
-    1. Direct answer to typical customer coverage expectations
-    2. Conditions and exclusions affecting claims
-    3. Risk and cost impact to insurer
-    4. Suggestions to improve product profitability or coverage design
+      Answer in this format:
 
-    IMPORTANT:
-    - Answer strictly based on the clauses provided below.
-    - If something is not explicitly stated in the clauses, say:
-      "Not explicitly mentioned in policy wording".
-    - Do NOT assume standard insurance coverage unless written in clauses.
+      1. Direct answer to typical customer coverage expectations
+      2. Conditions and exclusions affecting claims
+      3. Risk and cost impact to insurer
+      4. Suggestions to improve product profitability or coverage design
 
-    ${context}
-    `
-    });
+      IMPORTANT:
+      - Answer strictly based on the clauses provided below.
+      - If something is not explicitly stated in the clauses, say:
+        "Not explicitly mentioned in policy wording".
+      - Do NOT assume standard insurance coverage unless written in clauses.
+
+      ${context}
+    `;
+
+    const answer = await askLLM(prompt);
+
 
     const uniqueSources = [];
     const seen = new Set();
