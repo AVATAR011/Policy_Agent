@@ -1,6 +1,6 @@
 import express from "express";
 import { searchVectors } from "../services/vector.service.js";
-import { buildPolicyPrompt } from "../utils/promptBuilder.js";
+import { buildPolicyCompPrompt } from "../utils/promptBuilder.js";
 import { askLLM } from "../services/llm.service.js";
 
 const router = express.Router();
@@ -9,11 +9,17 @@ const COMPANIES = ["ACKO", "HDFCERGO", "GODIGIT"];
 
 function dedupeSources(results) {
   const map = new Map();
+
   for (const r of results) {
-    map.set(r.metadata.file, r.metadata);
+    const meta =
+      typeof r.metadata === "string" ? JSON.parse(r.metadata) : r.metadata;
+
+    map.set(meta.file, meta);
   }
+
   return [...map.values()];
 }
+
 
 export async function compareHandler(req, res){
   try {
@@ -38,6 +44,11 @@ export async function compareHandler(req, res){
         topK: 5,
       });
 
+      baseResults = baseResults.map(r => ({
+        ...r,
+        metadata: typeof r.metadata === "string" ? JSON.parse(r.metadata) : r.metadata
+      }));
+
       // ---- ADDON SEARCH if needed
       if (question.toLowerCase().includes("engine")) {
         const addonResults = await searchVectors({
@@ -50,7 +61,12 @@ export async function compareHandler(req, res){
           topK: 5,
         });
 
-        baseResults = [...addonResults, ...baseResults];
+        const parsedAddon = addonResults.map(r => ({
+          ...r,
+          metadata: typeof r.metadata === "string" ? JSON.parse(r.metadata) : r.metadata
+        }));
+
+        baseResults = [...parsedAddon, ...baseResults];
       }
 
       if (!baseResults.length) {
@@ -60,8 +76,8 @@ export async function compareHandler(req, res){
         };
         continue;
       }
-
-      const prompt = buildPolicyPrompt(question, baseResults);
+  
+      const prompt = buildPolicyCompPrompt(question, baseResults);
       const answer = await askLLM(prompt);
 
       results[company] = {
