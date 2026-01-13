@@ -17,7 +17,7 @@ function dedupeSources(results) {
 
 export async function compareHandler(req, res){
   try {
-    const { question, product, policyType } = req.body;
+    const { question, product, policyType, history } = req.body;
 
     if (!question || !product || !policyType) {
       return res.status(400).json({

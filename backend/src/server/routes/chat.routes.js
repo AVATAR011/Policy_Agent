@@ -44,7 +44,7 @@ function detectIntent(text) {
  */
 router.post("/", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, history = [] } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: "Message required" });
@@ -58,6 +58,7 @@ router.post("/", async (req, res) => {
     const fakeReq = {
         body: {
             question: message,
+            history,
             company: null,
             product: null,
             policyType: null,

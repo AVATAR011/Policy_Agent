@@ -1,43 +1,46 @@
 import { useState } from "react";
 import ChatMessage from "../components/ChatMessage";
 import { sendMessage } from "../api/chatApi";
+import ChatWindow from "../components/ChatWindow";
 
 export default function Chatbot() {
   const [messages, setMessages] = useState([
     {
-      role: "bot",
-      text: "Hi! Ask me anything about insurance policies, coverage, risks, or product improvements.",
+      role: "assistant",
+      content: "Hi! Ask me anything about insurance policies, coverage, risks, or product improvements.",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+  if (!input.trim()) return;
 
-    const userMsg = { role: "user", text: input };
-    setMessages((m) => [...m, userMsg]);
-    setInput("");
-    setLoading(true);
+  const userMsg = { role: "user", content: input };
+  setMessages(prev => [...prev, userMsg]);
+  setInput("");
+  setLoading(true);
 
-    try {
-      const res = await sendMessage(input);
+  try {
+    const res = await sendMessage(input);
 
-      const botMsg = {
-        role: "assistant",
-        text: res.answer || "No answer received",
-      };
+    const botMsg = {
+      role: "assistant",
+      content: res.answer || JSON.stringify(res, null, 2)
+    };
 
-      setMessages((m) => [...m, botMsg]);
-    } catch (err) {
-      setMessages((m) => [
-        ...m,
-        { role: "assistant", text: "❌ Server error. Please try again." },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setMessages(prev => [...prev, botMsg]);
+  } catch (err) {
+    setMessages(prev => [
+      ...prev,
+      { role: "assistant", content: "❌ Server error. Please try again." }
+    ]);
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
   return (
@@ -58,9 +61,7 @@ export default function Chatbot() {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-2">
-          {messages.map((m, i) => (
-            <ChatMessage key={i} role={m.role} text={m.text} />
-          ))}
+          <ChatWindow messages={messages} />
           {loading && (
             <div className="text-slate-400 text-sm">Typing...</div>
           )}

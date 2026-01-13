@@ -27,6 +27,7 @@ app.use(cors({
 
 // app.use("/api", searchRoutes);
 app.use("/chat", chatRoutes);
+
 app.use("/api", ragRoutes);
 app.use("/api", compareRoutes);
 app.use("/api", improveRoutes);
