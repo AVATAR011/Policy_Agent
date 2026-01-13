@@ -16,30 +16,35 @@ export default function Chatbot() {
   const handleSend = async () => {
   if (!input.trim()) return;
 
-  const userMsg = { role: "user", content: input };
-  setMessages(prev => [...prev, userMsg]);
+  const newMessages = [
+    ...messages,
+    { role: "user", content: input }
+  ];
+
+  setMessages(newMessages);
   setInput("");
   setLoading(true);
 
   try {
-    const res = await sendMessage(input);
+    const data = await sendMessage(newMessages);
 
-    const botMsg = {
-      role: "assistant",
-      content: res.answer || JSON.stringify(res, null, 2)
-    };
-
-    setMessages(prev => [...prev, botMsg]);
-  } catch (err) {
-    setMessages(prev => [
-      ...prev,
-      { role: "assistant", content: "❌ Server error. Please try again." }
+    setMessages([
+      ...newMessages,
+      { role: "assistant", content: data.answer }
     ]);
-    console.error(err);
+  } catch (err) {
+    setMessages([
+      ...newMessages,
+      {
+        role: "assistant",
+        content: `❌ ${err.message || "Server error"}`
+      }
+    ]);
   } finally {
     setLoading(false);
   }
 };
+
 
 
 

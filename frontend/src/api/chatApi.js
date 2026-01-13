@@ -1,14 +1,17 @@
-export async function sendMessage(message) {
+export async function sendMessage(messages) {
   try {
+    const lastUserMessage = messages
+      .filter(m => m.role === "user")
+      .at(-1)?.content;
+
     const res = await fetch("http://localhost:5000/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message
+        message: lastUserMessage,   // ✅ backend-compatible
+        history: messages           // (optional, for Step 1 memory)
       })
     });
-
-    // const data = await res.json();
 
     if (!res.ok) {
       const text = await res.text();

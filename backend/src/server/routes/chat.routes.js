@@ -44,21 +44,31 @@ function detectIntent(text) {
  */
 router.post("/", async (req, res) => {
   try {
-    const { message, history = [] } = req.body;
-
-    if (!message) {
-      return res.status(400).json({ error: "Message required" });
+    let { messages, message, history } = req.body;
+    if (Array.isArray(history)) {
+      messages = history;
     }
 
-    const intent = detectIntent(message);
+    // ✅ Case 2: Postman sends single message
+    if (!messages && message) {
+      messages = [{ role: "user", content: message }];
+    }
+
+    // ❌ Still invalid
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ error: "Messages array required" });
+    }
+
+    const lastUserMsg = messages[messages.length - 1].content;
+    const intent = detectIntent(lastUserMsg);
 
     console.log("🧠 Intent:", intent);
 
     // Fake req/res wrappers to reuse existing handlers
     const fakeReq = {
         body: {
-            question: message,
-            history,
+            question: lastUserMsg,
+            chatHistory: messages.slice(0,-1),
             company: null,
             product: null,
             policyType: null,

@@ -25,6 +25,7 @@ export async function askLLM(prompt) {
         role: "system",
         content: prompt.system || "You are a helpful insurance assistant."
       },
+      ...(prompt.chatHistory || []),
       {
         role: "user",
         content: prompt.user
