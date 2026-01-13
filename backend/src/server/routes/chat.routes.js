@@ -5,37 +5,32 @@ import { improveHandler } from "./improve.routes.js";
 
 const router = express.Router();
 
-function detectIntent(text) {
-  const q = text.toLowerCase();
+async function detectIntent(question) {
+  const q = question.toLowerCase();
 
-  // ---- COMPARISON ----
-  if (
-    q.includes("compare") ||
-    q.includes("which insurer") ||
-    q.includes("best policy") ||
-    q.includes("difference between") ||
-    q.includes("vs") ||
-    q.includes("better than")
-  ) {
-    return "compare";
-  }
+  if (q.includes("compare")) return "COMPARE";
+  if (q.includes("improve") || q.includes("profit") || q.includes("design"))
+    return "IMPROVE";
+  if (q.includes("covered") || q.includes("policy") || q.includes("claim"))
+    return "RAG";
 
-  // ---- PRODUCT IMPROVEMENT ----
-  if (
-    q.includes("improve") ||
-    q.includes("profit") ||
-    q.includes("loss") ||
-    q.includes("pricing") ||
-    q.includes("design") ||
-    q.includes("recommend product") ||
-    q.includes("how to increase") ||
-    q.includes("business")
-  ) {
-    return "improve";
-  }
+  return "CHAT";
+}
 
-  // ---- DEFAULT: POLICY Q&A ----
-  return "rag";
+function inferBaseFilters(question) {
+  const q = question.toLowerCase();
+
+  let product = null;
+  let policyType = null;
+
+  if (q.includes("private car") || q.includes("car")) product = "PRIVATE_CAR";
+  if (q.includes("two wheeler") || q.includes("bike")) product = "TWO_WHEELER";
+
+  if (q.includes("bundled")) policyType = "BUNDLED_POLICY";
+  if (q.includes("package")) policyType = "PACKAGE_POLICY";
+  if (q.includes("standalone") || q.includes("own damage")) policyType = "SAOD_POLICY";
+
+  return { product, policyType };
 }
 
 
@@ -62,27 +57,27 @@ router.post("/", async (req, res) => {
     const lastUserMsg = messages[messages.length - 1].content;
     const intent = detectIntent(lastUserMsg);
 
+
+
     console.log("🧠 Intent:", intent);
 
+    const { product, policyType } = inferBaseFilters(lastUserMsg);
     // Fake req/res wrappers to reuse existing handlers
     const fakeReq = {
         body: {
             question: lastUserMsg,
             chatHistory: messages.slice(0,-1),
-            company: null,
-            product: null,
-            policyType: null,
-            policyClass: null,
-            addonType: null
+            product,
+            policyType
         }
     };
 
     try {
-        if (intent === "compare") {
+        if (intent === "COMPARE") {
             return await compareHandler(fakeReq, res);
         }
 
-        if (intent === "improve") {
+        if (intent === "IMPROVE") {
             return await improveHandler(fakeReq, res);
         }
 
