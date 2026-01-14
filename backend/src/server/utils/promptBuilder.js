@@ -58,8 +58,23 @@ export function buildPolicyCompPrompt(question, results) {
   `;
 }
 
-export function buildPolicyPrompt(question, chunks) {
+export function buildPolicyPrompt(question, chunks, claimsSummary = null) {
   const context = chunks.map((c, i) => `(${i+1}) ${c.content}`).join("\n");
+
+  const claimsContext = claimsSummary
+    ? `
+CLAIMS INSIGHTS:
+Top Risky Coverages:
+${claimsSummary.topCoverages.map(c =>
+  `- ${c.coverage_name}: ${c.total_claims} claims | Risk Score: ${c.risk_score}`
+).join("\n")}
+
+Risky Policy Types:
+${claimsSummary.riskyPolicies.map(p =>
+  `- ${p.policy_type}: ${p.total_claims} claims | Risk Score: ${p.risk_score}`
+).join("\n")}
+`
+    : "";
 
   return `
 You are an insurance policy expert advising insurers.
@@ -68,25 +83,24 @@ Question:
 ${question}
 
 IMPORTANT:
-- Answer strictly based on the clauses provided below.
-- If something is not explicitly stated in the clauses, say:
+- Answer strictly based on clauses + claims insights if provided.
+- If something is not explicitly stated, say:
   "Not explicitly mentioned in policy wording".
-- Do NOT assume standard insurance coverage unless written in clauses.
 
 Policy Evidence:
 ${context}
 
+${claimsContext}
+
 Answer in the following format:
 
-1. Direct Answer (Is it covered? base vs addon)
+1. Direct Answer
 2. Conditions or exclusions
-3. Risk or cost impact for insurer
+3. Risk or cost impact for insurer (USE CLAIMS DATA IF AVAILABLE)
 4. Suggestions for policy or pricing improvement
-
-If coverage is not in base policy but available via add-on,
-clearly state that add-on name and requirement.
 `;
 }
+
 
 export function buildPolicyImprovementPrompt(policyText) {
   return `
