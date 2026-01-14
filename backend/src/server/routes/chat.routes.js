@@ -2,6 +2,7 @@ import express from "express";
 import { ragHandler } from "./rag.routes.js";
 import { compareHandler } from "./compare.routes.js";
 import { improveHandler } from "./improve.routes.js";
+import { askLLM } from "../services/llm.service.js";
 
 const router = express.Router();
 let lastContext = null;
@@ -67,29 +68,36 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Messages array required" });
     }
 
-    const lastUserMsg = messages[messages.length - 1].content;
-    const prevUserMsgs = messages
-      .slice(0, -1)
-      .filter(m => m.role === "user")
-      .map(m => m.content);
+    const rewritePrompt = `
+      You are a conversation understanding assistant.
 
-    const previousTopic = prevUserMsgs.length
-      ? prevUserMsgs[prevUserMsgs.length - 1]
-      : null;
-    const intent = detectIntent(lastUserMsg);
+      Rewrite the LAST user message into a full standalone insurance question
+      using the previous chat context.
 
+      Conversation:
+      ${messages.map(m => `${m.role}: ${m.content}`).join("\n")}
 
+      Return ONLY the rewritten question.
+    `;
 
+    const rewritten = await askLLM({
+      system: "You rewrite follow-up questions into full insurance queries.",
+      user: rewritePrompt
+    });
+
+    const finalQuestion = rewritten.trim();
+
+    const intent = detectIntent(finalQuestion);
     console.log("🧠 Intent:", intent);
 
-    const { product, policyType } = inferBaseFilters(lastUserMsg);
+    const { product, policyType } = inferBaseFilters(finalQuestion);
     // Fake req/res wrappers to reuse existing handlers
-    let effectiveQuestion = lastUserMsg;
+     const effectiveQuestion = finalQuestion;
 
     // If user says "compare", attach previous topic
-    if (intent === "COMPARE" && previousTopic) {
-      effectiveQuestion = `Compare insurers regarding: ${previousTopic}`;
-    }
+    // if (intent === "COMPARE" && previousTopic) {
+    //   effectiveQuestion = `Compare insurers regarding: ${previousTopic}`;
+    // }
     const fakeReq = {
         body: {
             question:  effectiveQuestion,
