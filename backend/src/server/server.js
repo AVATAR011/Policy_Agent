@@ -5,6 +5,7 @@ import ragRoutes from "./routes/rag.routes.js";
 import compareRoutes from "./routes/compare.routes.js";
 import improveRoutes from "./routes/improve.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
+import claimsRoutes from "./routes/claims.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
@@ -26,8 +27,9 @@ app.use(cors({
 }));
 
 // app.use("/api", searchRoutes);
-app.use("/chat", chatRoutes);
+app.use("/", claimsRoutes);
 
+app.use("/chat", chatRoutes);
 app.use("/api", ragRoutes);
 app.use("/api", compareRoutes);
 app.use("/api", improveRoutes);
