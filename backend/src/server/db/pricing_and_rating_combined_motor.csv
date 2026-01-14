@@ -1,0 +1,210 @@
+policy_type,coverage_name,base_rate_inr,addon_price_inr,deductible_discount_pct,ev_loading_pct,commercial_loading_pct,expected_loss_ratio_band,pricing_action_hint,vehicle_age_band,cubic_capacity_band,location_zone,driver_age_band,claim_history_band,vehicle_age_factor,cubic_capacity_factor,location_loading_pct,driver_age_factor,claim_history_discount_pct,final_rating_multiplier
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Package,Own Damage,6500,0,0,0,0,Balanced,Maintain rate,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Bundled,Own Damage,6200,0,0,0,0,Balanced,Maintain rate,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Standalone Own Damage,Own Damage,7000,0,0,0,0,Medium,Slight increase,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Liability Only,Third Party,2200,0,0,0,0,Loss Heavy,Regulated – no change,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Long Term Package,Own Damage,18000,0,0,0,0,Balanced,Lock pricing,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Package,Zero Depreciation,0,3500,0.05,0.05,0,Loss Heavy,Increase price / cap claims,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Bundled,Zero Depreciation,0,3200,0.05,0.05,0,Loss Heavy,Increase price,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Standalone Own Damage,Zero Depreciation,0,3800,0.05,0.05,0,Medium,Limit eligibility,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Package,Engine Protect,0,4200,0.1,0.08,0.1,High Risk,Increase deductible,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Commercial Package,Engine Protect,0,5200,0.1,0,0.15,High Risk,Restrict to new vehicles,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Package,Consumables,0,900,0,0,0,Profitable,Bundle for retention,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Bundled,Consumables,0,850,0,0,0,Profitable,Auto-attach,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Package,Tyre Protect,0,2800,0.05,0,0,Balanced,Cap claims,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Commercial Package,Tyre Protect,0,3200,0.05,0,0.1,Medium,Increase price,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Package,Roadside Assistance,0,600,0,0,0,Highly Profitable,Use as acquisition lever,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Package,EV Addon,0,4800,0.05,0.12,0,High Risk,Apply EV loading,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Standalone Own Damage,EV Addon,0,5200,0.05,0.12,0,High Risk,Restrict geography,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Commercial Package,Loss of Use,0,4500,0,0,0.2,Medium,Apply daily cap,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,0-3 years,<1000cc,Inland Urban,30-45,No Claims,0.95,0.95,0,0.95,0.1,0.73
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,0-3 years,1000-1500cc,Inland Urban,30-45,No Claims,1,1,0,1,0.1,0.9
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,3-5 years,1000-1500cc,Inland Urban,25-30,1 Claim,1.05,1.05,0.02,1.05,0.05,1.05
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,3-5 years,1500-2000cc,Coastal Urban,25-30,1 Claim,1.1,1.1,0.08,1.1,0.05,1.38
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,5-7 years,1500-2000cc,Inland Rural,18-25,2 Claims,1.2,1.15,0.05,1.2,0,1.67
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,5-7 years,>2000cc,Coastal Urban,25-30,2 Claims,1.25,1.25,0.1,1.15,0,1.98
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,7+ years,>2000cc,Coastal Rural,18-25,3+ Claims,1.4,1.35,0.15,1.3,-0.1,2.45
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,7+ years,1500-2000cc,Flood Zone,18-25,3+ Claims,1.45,1.3,0.18,1.35,-0.1,2.75
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,7+ years,<1000cc,Inland Rural,18-25,3+ Claims,1.35,1.1,0.07,1.3,-0.1,1.88
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,0-3 years,EV,Coastal Urban,30-45,No Claims,1.05,1.1,0.08,1,0.1,1.03
+Commercial Package,EMI Protector,0,3800,0,0,0.15,Balanced,Price by tenure,3-5 years,EV,Flood Zone,25-30,1 Claim,1.2,1.15,0.15,1.1,0.05,1.61
