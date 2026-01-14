@@ -7,6 +7,7 @@ import improveRoutes from "./routes/improve.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import claimsRoutes from "./routes/claims.routes.js";
 import pricingRoutes from "./routes/pricing.routes.js";
+// import claimsAnalyticsRoutes from "./routes/analytics.claims.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
@@ -30,6 +31,7 @@ app.use(cors({
 // app.use("/api", searchRoutes);
 app.use("/", claimsRoutes);
 app.use("/", pricingRoutes);
+// app.use("/analytics/claims", claimsAnalyticsRoutes);
 
 app.use("/chat", chatRoutes);
 app.use("/api", ragRoutes);
