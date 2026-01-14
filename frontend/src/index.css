@@ -1,4 +1,4 @@
 @import "tailwindcss";
 
 /* ✅ Enable typography plugin */
-@plugin "@tailwindcss/typography";
+/* @plugin "@tailwindcss/typography"; */
