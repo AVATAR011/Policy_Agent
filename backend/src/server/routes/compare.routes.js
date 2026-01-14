@@ -97,7 +97,7 @@ export async function compareHandler(req, res){
       // }
 
       if (!baseResults.length) {
-        results[company] = {
+        answers[company] = {
           answer: "No relevant policy data found.",
           sources: [],
         };
@@ -113,7 +113,7 @@ export async function compareHandler(req, res){
       };
     }
 
-    res.json(results);
+    res.json(answers);
   } catch (err) {
     console.error("COMPARE ERROR:", err);
     res.status(500).json({ error: "Comparison failed" });
