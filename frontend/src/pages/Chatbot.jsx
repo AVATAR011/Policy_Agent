@@ -66,7 +66,7 @@ export default function Chatbot() {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-2">
-          <ChatWindow messages={messages} />
+          <ChatWindow messages={messages} loading={loading} />
           {loading && (
             <div className="text-slate-400 text-sm">Typing...</div>
           )}

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function ChatMessage({ role, content }) {
   const isUser = role === "user";
@@ -59,12 +61,31 @@ function InsurerCard({ name, data }) {
 }
 
 function Section({ text }) {
-  return <div className="whitespace-pre-wrap">{text}</div>;
+  return (
+    <div className="prose prose-invert max-w-none text-sm">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {text}
+      </ReactMarkdown>
+    </div>
+  );
 }
+
 
 function Sources({ sources }) {
   const [open, setOpen] = useState(false);
   if (!sources || sources.length === 0) return null;
+
+  // ✅ Normalize sources (handle stringified JSON safely)
+  const normalized = sources.map((s) => {
+    if (typeof s === "string") {
+      try {
+        return JSON.parse(s);
+      } catch {
+        return { file: s };
+      }
+    }
+    return s;
+  });
 
   return (
     <div className="text-xs">
@@ -77,9 +98,10 @@ function Sources({ sources }) {
 
       {open && (
         <ul className="mt-2 space-y-1 text-slate-300">
-          {sources.map((s, i) => (
+          {normalized.map((s, i) => (
             <li key={i}>
-              {s.company} • {s.file} • {s.section}
+              {s.company || "Unknown"} • {s.file || "Unknown"} •{" "}
+              {s.section || "N/A"}
             </li>
           ))}
         </ul>
