@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ChatMessage from "../components/ChatMessage";
 import { sendMessage } from "../api/chatApi";
 import ChatWindow from "../components/ChatWindow";
 
@@ -45,48 +44,53 @@ export default function Chatbot() {
   }
 };
 
-
-
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
-
-      {/* Chat Card */}
-      <div className="w-full max-w-3xl h-[85vh] bg-slate-950 rounded-2xl shadow-xl flex flex-col border border-slate-700">
-
-        {/* Header */}
-        <div className="p-4 border-b border-slate-700 text-center">
-          <h1 className="text-xl font-semibold text-white">
+    <div className="flex flex-col h-full w-full bg-slate-900">
+      {/* Header */}
+      <div className="p-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center shadow-sm">
+        <div>
+          <h1 className="text-lg font-semibold text-white">
             Insurance Policy Assistant
           </h1>
           <p className="text-xs text-slate-400">
-            Ask about coverage, exclusions, risks & product design
+            AI-powered analysis for coverage & exclusions
           </p>
         </div>
+      </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-2">
-          <ChatWindow messages={messages} loading={loading} />
-          {loading && (
-            <div className="text-slate-400 text-sm">Typing...</div>
-          )}
-        </div>
+      {/* Messages Area - Fills available space */}
+      <div className="flex-1 overflow-hidden relative flex flex-col">
+        <ChatWindow messages={messages} loading={loading} />
+        
+        {loading && (
+          <div className="absolute bottom-4 left-6 text-slate-400 text-xs animate-pulse bg-slate-900/80 px-2 py-1 rounded">
+            Agent is typing...
+          </div>
+        )}
+      </div>
 
-        {/* Input */}
-        <div className="p-4 border-t border-slate-700 flex gap-2">
+      {/* Input Area - Fixed at bottom */}
+      <div className="p-4 border-t border-slate-800 bg-slate-950">
+        <div className="max-w-4xl mx-auto flex gap-3">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about coverage, exclusions, pricing ideas..."
-            className="flex-1 px-4 py-2 rounded-full bg-slate-800 text-white outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Ask a question about your policies..."
+            className="flex-1 px-5 py-3 rounded-xl bg-slate-800 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-600 focus:bg-slate-800 transition-all shadow-inner"
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
           />
           <button
             onClick={handleSend}
-            className="px-5 py-2 bg-blue-600 rounded-full hover:bg-blue-700 transition"
+            disabled={loading || !input.trim()}
+            className="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-600/20 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Send
           </button>
+        </div>
+        <div className="text-center mt-2">
+            <p className="text-[10px] text-slate-600">
+                AI can make mistakes. Please verify important information.
+            </p>
         </div>
       </div>
     </div>
