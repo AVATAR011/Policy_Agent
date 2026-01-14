@@ -10,12 +10,6 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import cors from "cors";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
-
-console.log("ENV CHECK:", process.env.OPENAI_API_KEY?.slice(0, 6));
 
 const app = express();
 app.use(express.json());

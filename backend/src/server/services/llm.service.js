@@ -1,4 +1,6 @@
 import OpenAI from "openai";
+import dotenv from "dotenv";
+dotenv.config();
 
 if (!process.env.OPENAI_API_KEY) {
   console.error("❌ OPENAI_API_KEY not found in environment variables");
