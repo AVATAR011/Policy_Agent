@@ -1,21 +1,24 @@
-export async function sendMessage(message) {
+export async function sendMessage(messages) {
   try {
+    const lastUserMessage = messages
+      .filter(m => m.role === "user")
+      .at(-1)?.content;
+
     const res = await fetch("http://localhost:5000/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message
+        message: lastUserMessage,   // ✅ backend-compatible
+        history: messages           // (optional, for Step 1 memory)
       })
     });
 
-    const data = await res.json();
-
     if (!res.ok) {
-      console.error("Backend error:", data);
-      throw new Error(data.error || "Server error");
+      const text = await res.text();
+      throw new Error(text || "Server error");
     }
 
-    return data;
+    return res.json();
   } catch (err) {
     console.error("Chat API failed:", err);
     throw err;
