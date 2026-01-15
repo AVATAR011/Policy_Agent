@@ -4,7 +4,7 @@ import path from "path";
 
 const router = express.Router();
 // Resolve path relative to where server.js is running (backend/src/server)
-const DATA_ROOT = path.resolve(process.cwd(), "../insurance_data");
+const DATA_ROOT = path.resolve(process.cwd(), "./insurance_data");
 
 async function buildTree(currentPath) {
   const node = { files: [] };
