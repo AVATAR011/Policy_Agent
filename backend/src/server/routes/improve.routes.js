@@ -2,6 +2,7 @@ import express from "express";
 import { searchVectors } from "../services/vector.service.js";
 import { askLLM } from "../services/llm.service.js";
 import { buildPolicyImprovementPrompt } from "../utils/promptBuilder.js";
+import { getClaimsSummary } from "../services/claims.service.js";
 
 const router = express.Router();
 
@@ -55,6 +56,22 @@ export async function improveHandler(req, res){
     ${addonText || "No add-on clauses found."}
     `;
 
+    const claimsSummary = getClaimsSummary();
+
+    const claimsContext = claimsSummary
+      ? `
+        CLAIMS INSIGHTS:
+        Top Risky Coverages:
+        ${claimsSummary.topCoverages.map(c =>
+          `- ${c.coverage_name}: ${c.total_claims} claims | Risk Score: ${c.risk_score}`
+        ).join("\n")}
+
+        Risky Policy Types:
+        ${claimsSummary.riskyPolicies.map(p =>
+          `- ${p.policy_type}: ${p.total_claims} claims | Risk Score: ${p.risk_score}`
+        ).join("\n")}
+        `
+      : "";
     // --- LLM PROMPT ---
     const prompt = `
       You are an insurance product analyst helping insurers improve policies.
@@ -64,6 +81,8 @@ export async function improveHandler(req, res){
       Company: ${company}
       Product: ${product}
       Policy Type: ${policyType}
+
+      ${claimsContext}
 
       Answer in this format:
 

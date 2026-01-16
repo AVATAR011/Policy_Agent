@@ -2,6 +2,7 @@ import express from "express";
 import { searchVectors } from "../services/vector.service.js";
 import { buildPolicyCompPrompt } from "../utils/promptBuilder.js";
 import { askLLM } from "../services/llm.service.js";
+import { getClaimsSummary } from "../services/claims.service.js";
 
 const router = express.Router();
 
@@ -76,26 +77,6 @@ export async function compareHandler(req, res){
         metadata: typeof r.metadata === "string" ? JSON.parse(r.metadata) : r.metadata
       }));
 
-      // ---- ADDON SEARCH if needed
-      // if (question.toLowerCase().includes("engine")) {
-      //   const addonResults = await searchVectors({
-      //     query: question,
-      //     company,
-      //     product: filters.product,
-      //     policyType: filters.policyType,
-      //     policyClass: "ADDON",
-      //     addonType: "ENGINE_PROTECT",
-      //     topK: 5,
-      //   });
-
-      //   const parsedAddon = addonResults.map(r => ({
-      //     ...r,
-      //     metadata: typeof r.metadata === "string" ? JSON.parse(r.metadata) : r.metadata
-      //   }));
-
-      //   baseResults = [...parsedAddon, ...baseResults];
-      // }
-
       if (!baseResults.length) {
         answers[company] = {
           answer: "No relevant policy data found.",
@@ -104,7 +85,10 @@ export async function compareHandler(req, res){
         continue;
       }
   
-      const prompt = buildPolicyCompPrompt(question, baseResults);
+      const claimsSummary = getClaimsSummary();
+
+
+      const prompt = buildPolicyCompPrompt(question, baseResults, claimsSummary);
       const answer = await askLLM(prompt);
 
       answers[company] = {
