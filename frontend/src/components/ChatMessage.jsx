@@ -1,38 +1,43 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { ChevronDown, ChevronRight, FileText } from "lucide-react";
 
 export default function ChatMessage({ role, content }) {
   const isUser = role === "user";
 
-  if (isUser) {
-    return (
-      <div className="ml-auto max-w-[75%] px-4 py-2 rounded-xl bg-blue-600 text-white text-sm">
-        {content}
+  return (
+    <div className={`flex w-full ${isUser ? "justify-end" : "justify-start"} mb-4`}>
+      <div
+        className={`
+          relative max-w-[85%] rounded-2xl px-5 py-4 shadow-sm overflow-hidden
+          ${isUser 
+            ? "bg-blue-600 text-white rounded-br-sm" 
+            : "bg-slate-800 text-slate-100 rounded-bl-sm border border-slate-700"}
+        `}
+      >
+        {isUser ? (
+          <div className="text-sm leading-relaxed whitespace-pre-wrap">{content}</div>
+        ) : (
+          <AssistantContent content={content} />
+        )}
       </div>
-    );
-  }
+    </div>
+  );
+}
 
-  // ---------- ASSISTANT RENDERING ----------
+// --- SUB-COMPONENTS ---
 
-  // Case 1: plain string (FIXED: Now renders Markdown)
+function AssistantContent({ content }) {
+  // Case 1: Plain string (Error messages or simple replies)
   if (typeof content === "string") {
-    return (
-      <div className="mr-auto max-w-[75%] px-4 py-2 rounded-xl bg-slate-700 text-white text-sm">
-        {/* Added prose class for proper list/heading formatting */}
-        <div className="prose prose-invert max-w-none text-sm leading-relaxed">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {content}
-          </ReactMarkdown>
-        </div>
-      </div>
-    );
+    return <MarkdownText text={content} />;
   }
 
-  // Case 2: Multi-insurer comparison
+  // Case 2: Multi-insurer comparison (Object without 'answer' key)
   if (typeof content === "object" && !content.answer) {
     return (
-      <div className="mr-auto max-w-[85%] space-y-4">
+      <div className="space-y-4 w-full">
         {Object.entries(content).map(([insurer, data]) => (
           <InsurerCard key={insurer} name={insurer} data={data} />
         ))}
@@ -40,37 +45,43 @@ export default function ChatMessage({ role, content }) {
     );
   }
 
-  // Case 3: Single answer + sources
-  return <AnswerCard data={content} />;
+  // Case 3: Standard Answer + Sources
+  return (
+    <div className="space-y-3">
+      <MarkdownText text={content.answer} />
+      <Sources sources={content.sources} />
+    </div>
+  );
 }
 
-/* ---------------- COMPONENTS ---------------- */
-
-function AnswerCard({ data }) {
+function MarkdownText({ text }) {
   return (
-    <div className="mr-auto max-w-[85%] bg-slate-800 text-white rounded-xl p-4 space-y-3 text-sm">
-      <Section text={data.answer} />
-      <Sources sources={data.sources} />
+    // 'prose' classes format HTML elements (h1, p, ul) beautifully
+    <div className="prose prose-invert prose-sm max-w-none 
+      prose-p:leading-relaxed prose-p:my-2
+      prose-headings:text-slate-100 prose-headings:font-semibold prose-headings:mt-4 prose-headings:mb-2 prose-headings:text-base
+      prose-ul:my-2 prose-ul:list-disc prose-ul:pl-4
+      prose-ol:my-2 prose-ol:list-decimal prose-ol:pl-4
+      prose-li:my-0.5 prose-li:text-slate-300
+      prose-strong:text-white prose-strong:font-bold
+      prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+      text-slate-200 text-sm"
+    >
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {text}
+      </ReactMarkdown>
     </div>
   );
 }
 
 function InsurerCard({ name, data }) {
   return (
-    <div className="bg-slate-800 text-white rounded-xl p-4 space-y-3">
-      <div className="text-xs font-semibold text-blue-400">{name}</div>
-      <Section text={data.answer} />
+    <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-4">
+      <div className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-2 border-b border-slate-700 pb-2">
+        {name}
+      </div>
+      <MarkdownText text={data.answer} />
       <Sources sources={data.sources} />
-    </div>
-  );
-}
-
-function Section({ text }) {
-  return (
-    <div className="prose prose-invert max-w-none text-sm leading-relaxed">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-        {text}
-      </ReactMarkdown>
     </div>
   );
 }
@@ -79,36 +90,43 @@ function Sources({ sources }) {
   const [open, setOpen] = useState(false);
   if (!sources || sources.length === 0) return null;
 
-  // Normalize sources (handle stringified JSON safely)
+  // Normalize sources safely
   const normalized = sources.map((s) => {
     if (typeof s === "string") {
-      try {
-        return JSON.parse(s);
-      } catch {
-        return { file: s };
-      }
+      try { return JSON.parse(s); } catch { return { file: s }; }
     }
     return s;
   });
 
   return (
-    <div className="text-xs border-t border-slate-700 pt-2 mt-2">
+    <div className="pt-2 mt-2 border-t border-slate-700/50">
       <button
         onClick={() => setOpen(!open)}
-        className="text-blue-400 hover:text-blue-300 hover:underline flex items-center gap-1 transition-colors"
+        className="flex items-center gap-1.5 text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors"
       >
-        {open ? "Hide sources" : "Show sources"}
+        {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+        {open ? "Hide Sources" : `View ${normalized.length} Sources`}
       </button>
 
       {open && (
-        <ul className="mt-2 space-y-1 text-slate-400">
+        <div className="mt-3 grid gap-2">
           {normalized.map((s, i) => (
-            <li key={i} className="truncate">
-              <span className="font-medium text-slate-300">{s.company || "Doc"}</span> • {s.file || "Unknown"}
-              {s.section && <span className="text-slate-500"> • {s.section}</span>}
-            </li>
+            <div key={i} className="flex items-start gap-2 text-xs bg-slate-900/50 p-2 rounded border border-slate-700/50 text-slate-400">
+              <FileText size={14} className="mt-0.5 shrink-0 text-slate-500" />
+              <div className="overflow-hidden">
+                <span className="font-semibold text-slate-300 block">
+                  {s.company || "Document"}
+                </span>
+                <span className="truncate block opacity-80" title={s.file}>
+                  {s.file ? s.file.split('/').pop() : "Unknown File"}
+                </span>
+                {s.section && (
+                  <span className="block text-slate-500 mt-0.5">Section: {s.section}</span>
+                )}
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
