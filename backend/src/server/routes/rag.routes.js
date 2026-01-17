@@ -3,6 +3,7 @@ import { searchVectors } from "../services/vector.service.js";
 import { askLLM } from "../services/llm.service.js";
 import { buildPolicyPrompt } from "../utils/promptBuilder.js";
 import { getClaimsSummary } from "../services/claims.service.js";
+import { getPricingSummary } from "../services/pricing.service.js";
 
 const router = express.Router();
 
@@ -115,11 +116,13 @@ export async function ragHandler(req, res){
 
 
     const claimsSummary = getClaimsSummary();
+    const pricingSummary = getPricingSummary();
 
     const prompt = buildPolicyPrompt(
       question,
       uniqueResults,
-      claimsSummary   // 👈 inject claims
+      claimsSummary,
+      pricingSummary
     );
     const answer = await askLLM(prompt);
 

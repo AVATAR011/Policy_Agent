@@ -1,4 +1,4 @@
-export function buildPolicyCompPrompt(question, results, claimsSummary = null) {
+export function buildPolicyCompPrompt(question, results, claimsSummary = null, pricingSummary = null) {
   const grouped = {};
 
   for (const r of results) {
@@ -39,6 +39,23 @@ export function buildPolicyCompPrompt(question, results, claimsSummary = null) {
   - Do NOT invent numerical values.
   `
     : "";
+
+  const pricingContext = pricingSummary ? `
+    PRICING INSIGHTS:
+
+    Top Addon Pricing:
+    ${pricingSummary.addonPricing.map(a =>
+      `- ${a.addon_name}: Avg Price ₹${a.avg_addon_price}, Risk ${a.loss_band}, Action: ${a.pricing_action}`
+    ).join("\n")}
+
+    High Cost Segments:
+    ${pricingSummary.segmentPricing.map(s =>
+      `- ${s.policy_type} | ${s.vehicle_age_band} | ${s.location_zone}: 
+        Avg Base ₹${s.avg_base_rate}, Risk ${s.loss_band}, Action: ${s.pricing_action}`
+    ).join("\n")}
+    ` : "";
+
+
 
 
 
@@ -81,6 +98,9 @@ export function buildPolicyCompPrompt(question, results, claimsSummary = null) {
     - Never answer outside the format.
     - Never repeat the question.
     - Never generate a standalone explanation.
+    - If claims or pricing insights exist, always use them in Risk Impact and Suggestions.
+    - Never say "Not specified" if analytics data is available.
+
 
     FORMAT STRICTLY AS:
 
@@ -96,26 +116,29 @@ export function buildPolicyCompPrompt(question, results, claimsSummary = null) {
     ${context}
 
     ${claimsContext}
+
+    ${pricingContext}
   `;
 }
 
-export function buildPolicyPrompt(question, chunks, claimsSummary = null) {
+export function buildPolicyPrompt(question, chunks, claimsSummary = null, pricingSummary = null) {
   const context = chunks.map((c, i) => `(${i+1}) ${c.content}`).join("\n");
 
   const claimsContext = claimsSummary
     ? `
-CLAIMS INSIGHTS:
-Top Risky Coverages:
-${claimsSummary.topCoverages.map(c =>
-  `- ${c.coverage_name}: ${c.total_claims} claims | Risk Score: ${c.risk_score}`
-).join("\n")}
+    CLAIMS INSIGHTS:
+    Top Risky Coverages:
+    ${claimsSummary.topCoverages.map(c =>
+      `- ${c.coverage_name}: ${c.total_claims} claims | Risk Score: ${c.risk_score}`
+    ).join("\n")}
 
-Risky Policy Types:
-${claimsSummary.riskyPolicies.map(p =>
-  `- ${p.policy_type}: ${p.total_claims} claims | Risk Score: ${p.risk_score}`
-).join("\n")}
-`
-    : "";
+    Risky Policy Types:
+    ${claimsSummary.riskyPolicies.map(p =>
+      `- ${p.policy_type}: ${p.total_claims} claims | Risk Score: ${p.risk_score}`
+    ).join("\n")}
+    `
+        : "";
+
 
   return `
 You are an insurance policy expert advising insurers.
@@ -127,11 +150,18 @@ IMPORTANT:
 - Answer strictly based on clauses + claims insights if provided.
 - If something is not explicitly stated, say:
   "Not explicitly mentioned in policy wording".
+- If claims or pricing insights exist, always use them in Risk Impact and Suggestions.
+- Never say "Not specified" if analytics data is available.
+
 
 Policy Evidence:
 ${context}
 
 ${claimsContext}
+
+PRICING SIGNALS:
+${JSON.stringify(pricingSummary, null, 2)}
+
 
 Answer in the following format:
 

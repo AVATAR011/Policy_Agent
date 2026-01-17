@@ -3,6 +3,7 @@ import { searchVectors } from "../services/vector.service.js";
 import { askLLM } from "../services/llm.service.js";
 import { buildPolicyImprovementPrompt } from "../utils/promptBuilder.js";
 import { getClaimsSummary } from "../services/claims.service.js";
+import { getPricingSummary } from "../services/pricing.service.js";
 
 const router = express.Router();
 
@@ -57,6 +58,7 @@ export async function improveHandler(req, res){
     `;
 
     const claimsSummary = getClaimsSummary();
+    const pricingSummary = getPricingSummary();
 
     const claimsContext = claimsSummary
       ? `
@@ -84,6 +86,10 @@ export async function improveHandler(req, res){
 
       ${claimsContext}
 
+      PRICING INSIGHTS:
+      ${JSON.stringify(pricingSummary, null, 2)}
+
+
       Answer in this format:
 
       1. Direct answer to typical customer coverage expectations
@@ -96,6 +102,9 @@ export async function improveHandler(req, res){
       - If something is not explicitly stated in the clauses, say:
         "Not explicitly mentioned in policy wording".
       - Do NOT assume standard insurance coverage unless written in clauses.
+      - If claims or pricing insights exist, always use them in Risk Impact and Suggestions.
+      - Never say "Not specified" if analytics data is available.
+
 
       ${context}
     `;

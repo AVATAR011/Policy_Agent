@@ -3,6 +3,8 @@ import { searchVectors } from "../services/vector.service.js";
 import { buildPolicyCompPrompt } from "../utils/promptBuilder.js";
 import { askLLM } from "../services/llm.service.js";
 import { getClaimsSummary } from "../services/claims.service.js";
+import { getPricingSummary } from "../services/pricing.service.js";
+
 
 const router = express.Router();
 
@@ -86,9 +88,9 @@ export async function compareHandler(req, res){
       }
   
       const claimsSummary = getClaimsSummary();
+      const pricingSummary = getPricingSummary();
 
-
-      const prompt = buildPolicyCompPrompt(question, baseResults, claimsSummary);
+      const prompt = buildPolicyCompPrompt(question, baseResults, claimsSummary, pricingSummary);
       const answer = await askLLM(prompt);
 
       answers[company] = {
