@@ -11,6 +11,7 @@ export default function PolicyBuilder() {
   });
 
   const [policy, setPolicy] = useState(null);
+  const [intelligence, setIntelligence] = useState(null);
   const [chat, setChat] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,7 +25,9 @@ export default function PolicyBuilder() {
     try {
       setLoading(true);
       const result = await generatePolicy(form);
+      setIntelligence(null);
       setPolicy(result.generatedPolicy);
+      setIntelligence(result.intelligenceUsed);
       setChat([]);
       setConfirmed(false);
     } finally {
@@ -157,6 +160,45 @@ export default function PolicyBuilder() {
             </div>
           )}
         </Card>
+        {intelligence && (
+            <Card title="📊 Intelligence Used">
+                <Info
+                label="High Risk Areas"
+                value={intelligence.highRiskAreas?.join(", ") || "None"}
+                />
+
+                <Info
+                label="Pricing Signals"
+                value={intelligence.pricingSignals?.join(", ") || "None"}
+                />
+
+                <Info
+                label="Market Gaps"
+                value={intelligence.marketGaps?.join(", ") || "None"}
+                />
+
+                <Info
+                label="Loss Heavy Segments"
+                value={
+                    intelligence.lossHeavySegments !== undefined
+                    ? intelligence.lossHeavySegments
+                    : "N/A"
+                }
+                />
+
+                <Info
+                label="Segment Mix"
+                value={
+                    intelligence.segmentMix
+                    ? Object.entries(intelligence.segmentMix)
+                        .map(([k, v]) => `${k}: ${v}`)
+                        .join(" | ")
+                    : "N/A"
+                }
+                />
+            </Card>
+        )}
+
       </div>
 
       {/* REFINEMENT CHAT */}
