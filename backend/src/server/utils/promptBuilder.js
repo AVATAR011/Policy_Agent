@@ -1,4 +1,4 @@
-export function buildPolicyCompPrompt(question, results) {
+export function buildPolicyCompPrompt(question, results, claimsSummary = null, pricingSummary = null) {
   const grouped = {};
 
   for (const r of results) {
@@ -20,6 +20,44 @@ export function buildPolicyCompPrompt(question, results) {
     )
     .join("\n\n");
 
+  const claimsContext = claimsSummary
+    ? `
+  CLAIMS INSIGHTS (USE FOR RISK ANALYSIS ONLY):
+
+  Top Risky Coverages:
+  ${claimsSummary.topCoverages.map(c =>
+    `- ${c.coverage_name}: ${c.total_claims} claims | Risk Score: ${c.risk_score}`
+  ).join("\n")}
+
+  Risky Policy Types:
+  ${claimsSummary.riskyPolicies.map(p =>
+    `- ${p.policy_type}: ${p.total_claims} claims | Risk Score: ${p.risk_score}`
+  ).join("\n")}
+
+  IMPORTANT:
+  - Use this data only when discussing "Risk Impact".
+  - Do NOT invent numerical values.
+  `
+    : "";
+
+  const pricingContext = pricingSummary ? `
+    PRICING INSIGHTS:
+
+    Top Addon Pricing:
+    ${pricingSummary.addonPricing.map(a =>
+      `- ${a.addon_name}: Avg Price ₹${a.avg_addon_price}, Risk ${a.loss_band}, Action: ${a.pricing_action}`
+    ).join("\n")}
+
+    High Cost Segments:
+    ${pricingSummary.segmentPricing.map(s =>
+      `- ${s.policy_type} | ${s.vehicle_age_band} | ${s.location_zone}: 
+        Avg Base ₹${s.avg_base_rate}, Risk ${s.loss_band}, Action: ${s.pricing_action}`
+    ).join("\n")}
+    ` : "";
+
+
+
+
 
   return `
     You are an insurance product analyst comparing multiple insurers.
@@ -30,18 +68,39 @@ export function buildPolicyCompPrompt(question, results) {
     Below are policy clauses from different insurers.
 
     TASK:
-    Create a structured comparison with these sections:
+    You MUST compare insurers strictly insurer-by-insurer.
 
-    1. Coverage Availability (per insurer)
-    2. Key Conditions & Exclusions (per insurer)
-    3. Risk Exposure for Insurer
-    4. Product Design Differences
-    5. Recommendation (which product is stronger and why)
+    For EACH insurer:
+    - Extract only what is explicitly stated in its policy clauses.
+    - Do NOT infer or assume missing coverage.
+    - If something is not stated, write exactly:
+      "Not specified in policy wording".
+
+    You MUST follow the exact output format below.
+    Do NOT add extra sections.
+    Do NOT add a generic summary before insurer blocks.
+
+    FORMAT (STRICT):
+
+    INSURER: <Company Name>
+    - Coverage:
+    - Conditions:
+    - Risk Impact (use CLAIMS INSIGHTS if relevant):
+    - Notes:
+
+    Repeat this block for every insurer.
+
+    FINAL RECOMMENDATION:
+    <One concise paragraph comparing strengths and weaknesses>
 
     IMPORTANT RULES:
-    - Do NOT assume coverage if not explicitly stated.
-    - If not mentioned, say: "Not specified in policy wording".
-    - Compare insurer by insurer.
+    - Never merge insurers into one paragraph.
+    - Never answer outside the format.
+    - Never repeat the question.
+    - Never generate a standalone explanation.
+    - If claims or pricing insights exist, always use them in Risk Impact and Suggestions.
+    - Never say "Not specified" if analytics data is available.
+
 
     FORMAT STRICTLY AS:
 
@@ -55,26 +114,31 @@ export function buildPolicyCompPrompt(question, results) {
 
     POLICY CLAUSES:
     ${context}
+
+    ${claimsContext}
+
+    ${pricingContext}
   `;
 }
 
-export function buildPolicyPrompt(question, chunks, claimsSummary = null) {
+export function buildPolicyPrompt(question, chunks, claimsSummary = null, pricingSummary = null) {
   const context = chunks.map((c, i) => `(${i+1}) ${c.content}`).join("\n");
 
   const claimsContext = claimsSummary
     ? `
-CLAIMS INSIGHTS:
-Top Risky Coverages:
-${claimsSummary.topCoverages.map(c =>
-  `- ${c.coverage_name}: ${c.total_claims} claims | Risk Score: ${c.risk_score}`
-).join("\n")}
+    CLAIMS INSIGHTS:
+    Top Risky Coverages:
+    ${claimsSummary.topCoverages.map(c =>
+      `- ${c.coverage_name}: ${c.total_claims} claims | Risk Score: ${c.risk_score}`
+    ).join("\n")}
 
-Risky Policy Types:
-${claimsSummary.riskyPolicies.map(p =>
-  `- ${p.policy_type}: ${p.total_claims} claims | Risk Score: ${p.risk_score}`
-).join("\n")}
-`
-    : "";
+    Risky Policy Types:
+    ${claimsSummary.riskyPolicies.map(p =>
+      `- ${p.policy_type}: ${p.total_claims} claims | Risk Score: ${p.risk_score}`
+    ).join("\n")}
+    `
+        : "";
+
 
   return `
 You are an insurance policy expert advising insurers.
@@ -86,11 +150,18 @@ IMPORTANT:
 - Answer strictly based on clauses + claims insights if provided.
 - If something is not explicitly stated, say:
   "Not explicitly mentioned in policy wording".
+- If claims or pricing insights exist, always use them in Risk Impact and Suggestions.
+- Never say "Not specified" if analytics data is available.
+
 
 Policy Evidence:
 ${context}
 
 ${claimsContext}
+
+PRICING SIGNALS:
+${JSON.stringify(pricingSummary, null, 2)}
+
 
 Answer in the following format:
 
