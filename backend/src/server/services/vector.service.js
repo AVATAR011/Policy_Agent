@@ -8,7 +8,7 @@ import { VECTOR_DB_PATH } from "../config/db.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const db = new Database(VECTOR_DB_PATH, { readonly: true });
+const db = new Database(VECTOR_DB_PATH);
 
 // function cosineSim(a, b) {
 //   let dot = 0, na = 0, nb = 0;
@@ -19,6 +19,10 @@ const db = new Database(VECTOR_DB_PATH, { readonly: true });
 //   }
 //   return dot / (Math.sqrt(na) * Math.sqrt(nb));
 // }
+
+export async function embedText(text) {
+  return embedQuery(text);
+}
 
 export async function searchVectors({
   query,
@@ -32,7 +36,7 @@ export async function searchVectors({
   if (!query) throw new Error("Query missing for vector search");
 
   // 1. Embed the query
-  const queryEmbedding = await embedQuery(query);
+  const queryEmbedding = await embedText(query);
 
   // 2. Build metadata filter SQL
   const where = [];
@@ -67,4 +71,28 @@ export async function searchVectors({
   score: r.score,
   metadata: JSON.parse(r.metadata)   // ✅ VERY IMPORTANT
 }));
+}
+
+// ----------------------------------------------------
+// INSERT NEW EMBEDDING (for generated policies)
+// ----------------------------------------------------
+export async function insertEmbedding({
+  content,
+  embedding,
+  metadata = {}
+}) {
+  if (!content || !embedding) {
+    throw new Error("content and embedding are required");
+  }
+
+  const stmt = db.prepare(`
+    INSERT INTO vectors (content, embedding, metadata)
+    VALUES (?, ?, ?)
+  `);
+
+  stmt.run(
+    content,
+    JSON.stringify(embedding),
+    JSON.stringify(metadata)
+  );
 }

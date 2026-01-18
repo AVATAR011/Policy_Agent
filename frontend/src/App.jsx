@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Chatbot from "./pages/Chatbot";
-import Policy from "./pages/Policy"; // ✅ Import Policy
+import Policy from "./pages/Policy";
+import PolicyBuilder from "./pages/PolicyBuilder";
 import { MessageSquare, FileText, ShieldAlert, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function App() {
@@ -10,6 +11,7 @@ export default function App() {
   const menuItems = [
     { id: "chatbot", label: "Chatbot", icon: MessageSquare },
     { id: "policy", label: "Policy", icon: FileText },
+    { id: "builder", label: "Policy Builder", icon: FileText },
     { id: "claims", label: "Claims", icon: ShieldAlert },
   ];
 
@@ -82,7 +84,8 @@ export default function App() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 bg-slate-900 relative">
         {activeTab === "chatbot" && <Chatbot />}
-        {activeTab === "policy" && <Policy />} 
+        {activeTab === "policy" && <Policy />}
+        {activeTab === "builder" && <PolicyBuilder />}
         {activeTab === "claims" && (
           <div className="flex-1 flex flex-col items-center justify-center text-slate-500 bg-slate-900">
             <div className="p-8 rounded-2xl bg-slate-950 border border-slate-800 text-center max-w-md">

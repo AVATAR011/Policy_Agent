@@ -10,7 +10,14 @@ let lastContext = null;
 
 async function detectIntent(question) {
   const q = question.toLowerCase();
-
+  if (
+    q.includes("create policy") ||
+    q.includes("generate policy") ||
+    q.includes("design policy") ||
+    q.includes("new policy")
+  ) {
+    return "generate_policy";
+  }
   if (
     q.includes("compare") ||
     q.includes("difference between") ||
@@ -114,6 +121,9 @@ router.post("/", async (req, res) => {
 
         if (intent === "IMPROVE") {
             return await improveHandler(fakeReq, res);
+        }
+        if(intent === "generate_policy"){
+          return await generatePolicyHandler(req, res);
         }
 
         return await ragHandler(fakeReq, res);

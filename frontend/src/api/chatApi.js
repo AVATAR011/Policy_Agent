@@ -24,3 +24,47 @@ export async function sendMessage(messages) {
     throw err;
   }
 }
+
+// NEW API CALL
+export async function generatePolicy(payload) {
+  const response = await fetch("http://localhost:5000/generate-policy", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      question: `
+Policy Type: ${payload.policyType}
+Target Segment: ${payload.targetSegment}
+Business Goal: ${payload.businessGoal}
+Risk Preference: ${payload.riskLevel}
+Special Requirements: ${payload.notes}
+      `
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error("Generate policy API failed");
+  }
+
+  return response.json();
+}
+
+
+export async function refinePolicy(policy, message) {
+  const response = await fetch("http://localhost:5000/refine-policy", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      policy,
+      message
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error("Refine policy failed");
+  }
+
+  return response.json();
+}
+

@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { sendMessage } from "../api/chatApi";
+import { sendMessage, generatePolicy } from "../api/chatApi";
+
 import ChatWindow from "../components/ChatWindow";
 
 export default function Chatbot() {
+  
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -43,6 +45,60 @@ export default function Chatbot() {
     setLoading(false);
   }
 };
+
+async function sendGeneratePolicy() {
+  if (!input.trim()) return;
+
+  try {
+    // Show user message in chat
+    setMessages(prev => [
+      ...prev,
+      { role: "user", content: input }
+    ]);
+
+    // Call backend API
+    const data = await generatePolicy(input);
+
+    // Format response nicely
+    const policyText = `
+🧾 Policy Name: ${data.generatedPolicy.policy_name}
+
+🎯 Target Segment:
+${data.generatedPolicy.target_segment}
+
+✅ Coverages:
+- ${data.generatedPolicy.coverages.join("\n- ")}
+
+❌ Exclusions:
+- ${data.generatedPolicy.exclusions.join("\n- ")}
+
+💰 Pricing Strategy:
+${data.generatedPolicy.pricing_strategy}
+
+🛡 Risk Controls:
+- ${data.generatedPolicy.risk_controls.join("\n- ")}
+
+📈 Profitability Rationale:
+${data.generatedPolicy.profitability_rationale}
+`;
+
+    // Show generated policy in chat
+    setMessages(prev => [
+      ...prev,
+      { role: "assistant", content: policyText }
+    ]);
+
+    setInput("");
+
+  } catch (err) {
+    console.error(err);
+    setMessages(prev => [
+      ...prev,
+      { role: "assistant", content: "❌ Failed to generate policy." }
+    ]);
+  }
+}
+
 
   return (
     <div className="flex flex-col h-full w-full bg-slate-900">
@@ -86,6 +142,17 @@ export default function Chatbot() {
           >
             Send
           </button>
+          <div className="chat-actions">
+            <button onClick={handleSend}>Send</button>
+
+            <button
+              onClick={sendGeneratePolicy}
+              style={{ marginLeft: "10px" }}
+            >
+              🧠 Generate Policy
+            </button>
+          </div>
+
         </div>
         <div className="text-center mt-2">
             <p className="text-[10px] text-slate-600">

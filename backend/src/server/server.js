@@ -7,6 +7,7 @@ import improveRoutes from "./routes/improve.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import claimsRoutes from "./routes/claims.routes.js";
 import pricingRoutes from "./routes/pricing.routes.js";
+import { generatePolicyHandler } from "./routes/generatePolicy.routes.js";
 // import claimsAnalyticsRoutes from "./routes/analytics.claims.routes.js";
 import policyRoutes from "./routes/policy.routes.js"; 
 import path from "path";
@@ -39,6 +40,8 @@ app.use("/api", ragRoutes);
 app.use("/api", compareRoutes);
 app.use("/api", improveRoutes);
 app.use("/policies", policyRoutes);
+
+app.post("/generate-policy", generatePolicyHandler);
 
 const INSURANCE_DATA_PATH = path.join(__dirname, "../../insurance_data");
 app.use("/content", express.static(INSURANCE_DATA_PATH));
