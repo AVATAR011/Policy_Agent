@@ -1,6 +1,108 @@
 import { useState } from "react";
 import { generatePolicy, refinePolicy } from "../api/chatApi";
 
+function IntelligenceSection({ item }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="rounded-xl bg-slate-900 border border-slate-800 overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between p-4 hover:bg-slate-800 transition"
+      >
+        <div className="font-medium text-slate-200">
+          {item.title}
+        </div>
+
+        <span className="text-slate-400 text-sm">
+          {open ? "−" : "+"}
+        </span>
+      </button>
+
+      {open && (
+        <div className="p-4 pt-0 space-y-2">
+          <div className="text-xs text-slate-400">
+            {item.description}
+          </div>
+
+          <div className="text-sm text-blue-300">
+            <span className="text-slate-300 font-medium">
+              Observed:
+            </span>{" "}
+            {item.data}
+          </div>
+
+          <div className="text-xs text-emerald-400">
+            🎯 {item.impact}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+function explainIntelligence(intel) {
+  if (!intel) return [];
+
+  const sections = [
+    {
+      key: "risk",
+      title: "⚠️ High Risk Coverages",
+      description:
+        "These coverages historically generate higher claim frequency or severity. Pricing, deductibles, and underwriting rules should be stricter here.",
+      data: intel.highRiskAreas?.slice(0, 6).join(", "),
+      impact: "Impacts premium pricing and risk controls."
+    },
+    {
+      key: "pricing",
+      title: "💰 Pricing Signals",
+      description:
+        "Market pricing behavior observed across segments. Indicates whether rates should be increased, maintained, or restricted.",
+      data: intel.pricingSignals?.join(", "),
+      impact: "Guides premium strategy and discounts."
+    },
+    {
+      key: "market",
+      title: "🧭 Market Opportunities",
+      description:
+        "Coverage gaps where customer demand exists but product availability is limited.",
+      data: intel.marketGaps?.join(", "),
+      impact: "Helps differentiate products and grow revenue."
+    },
+    {
+      key: "loss",
+      title: "🚨 Loss Heavy Segments",
+      description:
+        "Number of segments where claims exceed premium significantly.",
+      data:
+        typeof intel.lossHeavySegments === "number"
+          ? `${intel.lossHeavySegments} segments`
+          : null,
+      impact: "Restricts aggressive growth in risky segments."
+    },
+    {
+      key: "mix",
+      title: "📊 Portfolio Mix",
+      description:
+        "Distribution of policy types in the dataset showing portfolio balance.",
+      data: intel.segmentMix
+        ? Object.entries(intel.segmentMix)
+            .map(([k, v]) => `${k}: ${v}`)
+            .join(" | ")
+        : null,
+      impact: "Ensures product alignment with market mix."
+    }
+  ];
+
+  // ✅ Remove empty sections automatically
+  return sections.filter(
+    s => s.data && s.data.trim && s.data.trim().length > 0
+  );
+}
+
+
+
 export default function PolicyBuilder() {
   const [form, setForm] = useState({
     policyType: "Motor",
@@ -16,6 +118,7 @@ export default function PolicyBuilder() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const [showIntelligence, setShowIntelligence] = useState(false);
 
   function updateField(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -23,15 +126,17 @@ export default function PolicyBuilder() {
 
   async function handleGenerate() {
     try {
-      setLoading(true);
-      const result = await generatePolicy(form);
-      setIntelligence(null);
-      setPolicy(result.generatedPolicy);
-      setIntelligence(result.intelligenceUsed);
-      setChat([]);
-      setConfirmed(false);
+        setLoading(true);
+        const result = await generatePolicy(form);
+        setShowIntelligence(false);
+        setIntelligence(null);
+        setPolicy(result.generatedPolicy);
+        setIntelligence(result.intelligenceUsed);
+
+        setChat([]);
+        setConfirmed(false);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   }
 
@@ -124,7 +229,21 @@ export default function PolicyBuilder() {
         </Card>
 
         {/* POLICY PREVIEW */}
-        <Card title="Generated Policy">
+        <Card>
+            <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-slate-200">
+                Generated Policy
+                </h2>
+
+                {intelligence && (
+                <button
+                    onClick={() => setShowIntelligence(true)}
+                    className="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition"
+                >
+                    📊 View Intelligence
+                </button>
+                )}
+            </div>
           {!policy && (
             <Empty text="Generate a policy to preview it here." />
           )}
@@ -160,44 +279,6 @@ export default function PolicyBuilder() {
             </div>
           )}
         </Card>
-        {intelligence && (
-            <Card title="📊 Intelligence Used">
-                <Info
-                label="High Risk Areas"
-                value={intelligence.highRiskAreas?.join(", ") || "None"}
-                />
-
-                <Info
-                label="Pricing Signals"
-                value={intelligence.pricingSignals?.join(", ") || "None"}
-                />
-
-                <Info
-                label="Market Gaps"
-                value={intelligence.marketGaps?.join(", ") || "None"}
-                />
-
-                <Info
-                label="Loss Heavy Segments"
-                value={
-                    intelligence.lossHeavySegments !== undefined
-                    ? intelligence.lossHeavySegments
-                    : "N/A"
-                }
-                />
-
-                <Info
-                label="Segment Mix"
-                value={
-                    intelligence.segmentMix
-                    ? Object.entries(intelligence.segmentMix)
-                        .map(([k, v]) => `${k}: ${v}`)
-                        .join(" | ")
-                    : "N/A"
-                }
-                />
-            </Card>
-        )}
 
       </div>
 
@@ -241,6 +322,40 @@ export default function PolicyBuilder() {
           </div>
         </Card>
       )}
+      {/* ---------------- Intelligence Sidebar ---------------- */}
+    {showIntelligence && intelligence && (
+    <div className="fixed inset-0 z-50 flex justify-end">
+        {/* Backdrop */}
+        <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={() => setShowIntelligence(false)}
+        />
+
+        {/* Panel */}
+        <div className="relative w-[420px] h-full bg-slate-950 border-l border-slate-800 shadow-xl overflow-y-auto p-5 animate-slideIn">
+        <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-white">
+            🧠 Intelligence Insights
+            </h3>
+
+            <button
+            onClick={() => setShowIntelligence(false)}
+            className="text-slate-400 hover:text-white"
+            >
+            ✕
+            </button>
+        </div>
+
+        <div className="space-y-4">
+            {explainIntelligence(intelligence).map((item) => (
+                <IntelligenceSection key={item.key} item={item} />
+            ))}
+
+        </div>
+        </div>
+    </div>
+    )}
+
     </div>
   );
 }
