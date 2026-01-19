@@ -1,0 +1,25 @@
+{
+  "name": "@spr/api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.5.0",
+    "@fastify/rate-limit": "^9.1.0",
+    "@spr/shared": "workspace:*",
+    "better-sqlite3": "^11.6.0",
+    "dotenv": "^16.6.1",
+    "fastify": "^4.28.1",
+    "ioredis": "^5.4.1",
+    "openai": "^4.56.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  }
+}
