@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { generatePolicy, refinePolicy } from "../api/chatApi";
+import { generatePolicy, refinePolicy, confirmPolicy } from "../api/chatApi";
 
 function IntelligenceSection({ item }) {
   const [open, setOpen] = useState(false);
@@ -21,20 +21,15 @@ function IntelligenceSection({ item }) {
 
       {open && (
         <div className="p-4 pt-0 space-y-2">
-          <div className="text-xs text-slate-400">
-            {item.description}
-          </div>
+            <div className="text-sm text-blue-300">
+                <span className="text-slate-300 font-medium">Observed:</span>{" "}
+                {item.data}
+            </div>
 
-          <div className="text-sm text-blue-300">
-            <span className="text-slate-300 font-medium">
-              Observed:
-            </span>{" "}
-            {item.data}
-          </div>
+            <div className="text-sm text-slate-300 leading-relaxed">
+                {item.explanation}
+            </div>
 
-          <div className="text-xs text-emerald-400">
-            🎯 {item.impact}
-          </div>
         </div>
       )}
     </div>
@@ -42,64 +37,59 @@ function IntelligenceSection({ item }) {
 }
 
 
-function explainIntelligence(intel) {
-  if (!intel) return [];
+function explainIntelligence(intel, explanation) {
+  if (!intel || !explanation) return [];
 
   const sections = [
     {
-      key: "risk",
+      key: "highRiskAreas",
       title: "⚠️ High Risk Coverages",
-      description:
-        "These coverages historically generate higher claim frequency or severity. Pricing, deductibles, and underwriting rules should be stricter here.",
       data: intel.highRiskAreas?.slice(0, 6).join(", "),
-      impact: "Impacts premium pricing and risk controls."
+      explanation: explanation.highRiskAreas
     },
     {
-      key: "pricing",
+      key: "pricingSignals",
       title: "💰 Pricing Signals",
-      description:
-        "Market pricing behavior observed across segments. Indicates whether rates should be increased, maintained, or restricted.",
       data: intel.pricingSignals?.join(", "),
-      impact: "Guides premium strategy and discounts."
+      explanation: explanation.pricingSignals
     },
     {
-      key: "market",
+      key: "marketGaps",
       title: "🧭 Market Opportunities",
-      description:
-        "Coverage gaps where customer demand exists but product availability is limited.",
       data: intel.marketGaps?.join(", "),
-      impact: "Helps differentiate products and grow revenue."
+      explanation: explanation.marketGaps
     },
     {
-      key: "loss",
+      key: "lossHeavySegments",
       title: "🚨 Loss Heavy Segments",
-      description:
-        "Number of segments where claims exceed premium significantly.",
       data:
         typeof intel.lossHeavySegments === "number"
           ? `${intel.lossHeavySegments} segments`
           : null,
-      impact: "Restricts aggressive growth in risky segments."
+      explanation: explanation.lossHeavySegments
     },
     {
-      key: "mix",
+      key: "segmentMix",
       title: "📊 Portfolio Mix",
-      description:
-        "Distribution of policy types in the dataset showing portfolio balance.",
       data: intel.segmentMix
         ? Object.entries(intel.segmentMix)
             .map(([k, v]) => `${k}: ${v}`)
             .join(" | ")
         : null,
-      impact: "Ensures product alignment with market mix."
+      explanation: explanation.segmentMix
     }
   ];
 
-  // ✅ Remove empty sections automatically
+  // ✅ Auto-hide empty sections
   return sections.filter(
-    s => s.data && s.data.trim && s.data.trim().length > 0
+    s =>
+      s.data &&
+      s.explanation &&
+      String(s.data).trim().length > 0 &&
+      String(s.explanation).trim().length > 0
   );
 }
+
 
 
 
@@ -114,6 +104,7 @@ export default function PolicyBuilder() {
 
   const [policy, setPolicy] = useState(null);
   const [intelligence, setIntelligence] = useState(null);
+  const [intelExplanation, setIntelExplanation] = useState(null);
   const [chat, setChat] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -132,6 +123,7 @@ export default function PolicyBuilder() {
         setIntelligence(null);
         setPolicy(result.generatedPolicy);
         setIntelligence(result.intelligenceUsed);
+        setIntelExplanation(result.intelligenceExplanation);   // ✅ NEW
 
         setChat([]);
         setConfirmed(false);
@@ -147,16 +139,22 @@ export default function PolicyBuilder() {
     setChat(prev => [...prev, userMsg]);
     setMessage("");
 
-    const result = await refinePolicy(policy, message);
+    const result = await refinePolicy(policy, intelligence, message);
 
     setPolicy(result.updatedPolicy);
     setChat(prev => [...prev, { role: "assistant", text: result.reply }]);
   }
 
-  function confirmPolicy() {
+  async function cnfrmPolicy() {
+  try {
+    await confirmPolicy(policy);
     setConfirmed(true);
     alert("✅ Policy confirmed and saved.");
+  } catch(err){
+    alert("❌ Failed to save policy"+err);
   }
+}
+
 
   return (
     <div className="h-full w-full p-6 overflow-auto space-y-6">
@@ -264,7 +262,7 @@ export default function PolicyBuilder() {
 
               {!confirmed && (
                 <button
-                  onClick={confirmPolicy}
+                  onClick={cnfrmPolicy}
                   className="w-full py-2 rounded-lg border border-green-600 text-green-400 hover:bg-green-600 hover:text-white transition"
                 >
                   ✅ Confirm Policy
@@ -347,7 +345,7 @@ export default function PolicyBuilder() {
         </div>
 
         <div className="space-y-4">
-            {explainIntelligence(intelligence).map((item) => (
+            {explainIntelligence(intelligence, intelExplanation).map((item) => (
                 <IntelligenceSection key={item.key} item={item} />
             ))}
 

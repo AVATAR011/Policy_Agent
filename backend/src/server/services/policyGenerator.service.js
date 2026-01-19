@@ -2,14 +2,8 @@
 
 export function buildGeneratePolicyPrompt(intelligence = {}, userRequirement = "") {
 
-  const commonCoverages = intelligence.commonCoverages || [];
-  const highRiskAreas = intelligence.highRiskAreas || [];
-  const lowRiskOpportunities = intelligence.lowRiskOpportunities || [];
-  const pricingPatterns = intelligence.pricingPatterns || [];
-  const marketGaps = intelligence.marketGaps || [];
-
   return `
-You are an insurance product architect.
+You are an insurance product architect and risk analyst.
 
 User requirement:
 "${userRequirement}"
@@ -26,28 +20,47 @@ Insights from data:
   }
 - Average Base Rate: ${intelligence.averageBaseRate || "Unknown"}
 - High Loss Segments: ${intelligence.highLossSegments}
+- Segment Mix: ${
+    intelligence.segmentMix
+      ? Object.entries(intelligence.segmentMix)
+          .map(([k, v]) => `${k}:${v}`)
+          .join(", ")
+      : "Unknown"
+  }
 
+TASK 1 — Create a NEW unique insurance policy optimized for the user requirement.
 
-Create a NEW unique insurance policy.
+TASK 2 — Explain WHY each intelligence signal influenced the policy decisions.
+Use the actual data provided above. Keep explanations concise (1–3 sentences each).
 
-IMPORTANT:
+IMPORTANT RESPONSE RULES:
 - Respond ONLY with VALID JSON.
 - DO NOT use markdown.
-- DO NOT add explanations.
-- DO NOT add trailing text.
-- Ensure all arrays and objects are properly closed.
-- Escape quotes properly.
+- DO NOT add extra commentary text.
+- DO NOT wrap in triple quotes.
+- Escape all quotes properly.
+- All arrays and objects must be closed correctly.
 
 Return EXACTLY this JSON schema:
+
 {
-  "policy_name": "",
-  "target_segment": "",
-  "coverages": [],
-  "exclusions": [],
-  "deductibles": "",
-  "pricing_strategy": "",
-  "risk_controls": [],
-  "profitability_rationale": ""
+  "policy": {
+    "policy_name": "",
+    "target_segment": "",
+    "coverages": [],
+    "exclusions": [],
+    "deductibles": "",
+    "pricing_strategy": "",
+    "risk_controls": [],
+    "profitability_rationale": ""
+  },
+  "explanations": {
+    "highRiskAreas": "",
+    "pricingSignals": "",
+    "marketGaps": "",
+    "lossHeavySegments": "",
+    "segmentMix": ""
+  }
 }
 `;
 }

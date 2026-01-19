@@ -51,20 +51,35 @@ Special Requirements: ${payload.notes}
 }
 
 
-export async function refinePolicy(policy, message) {
-  const response = await fetch("http://localhost:5000/refine-policy", {
+export async function refinePolicy(policy, intelligence, message) {
+  const res = await fetch("http://localhost:5000/api/policy/refine", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      policy,
-      message
-    })
+    body: JSON.stringify({ policy, intelligence, message })
   });
 
-  if (!response.ok) {
-    throw new Error("Refine policy failed");
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "Refine failed");
   }
 
-  return response.json();
+  return res.json();
+}
+
+
+
+export async function confirmPolicy(policy) {
+  const res = await fetch("http://localhost:5000/api/policy/confirm", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ policy })
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "Failed to confirm policy");
+  }
+
+  return res.json();
 }
 

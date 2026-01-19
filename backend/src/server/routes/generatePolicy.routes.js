@@ -62,22 +62,34 @@ export async function generatePolicyHandler(req, res) {
     const llmResponse = await askLLM(prompt);
     const cleaned = cleanLLMJson(llmResponse);
 
-    let policyJson;
+    let parsed;
     try {
-      policyJson = tryParseJsonSafely(cleaned);
+    parsed = tryParseJsonSafely(cleaned);
     } catch (err) {
-      console.error("Invalid JSON from LLM:", llmResponse);
-      return res.status(500).json({ error: "LLM returned invalid JSON" });
+    console.error("Invalid JSON from LLM:", llmResponse);
+    return res.status(500).json({ error: "LLM returned invalid JSON" });
     }
 
+    if (!parsed.policy || !parsed.explanations) {
+    console.error("⚠️ LLM response missing policy or explanations:", parsed);
+    return res.status(500).json({ error: "Invalid LLM response structure" });
+    }
+
+    const generatedPolicy = parsed.policy;
+    const intelligenceExplanation = parsed.explanations;
+
+
     // 5. Store generated policy
-    await storeGeneratedPolicy(policyJson);
+    // await storeGeneratedPolicy(generatedPolicy);
+
 
     res.json({
-      success: true,
-      generatedPolicy: policyJson,
-      intelligenceUsed: intelligence
+        success: true,
+        generatedPolicy,
+        intelligenceUsed: intelligence,
+        intelligenceExplanation
     });
+
 
   } catch (error) {
     console.error("Generate policy failed:", error);
