@@ -120,6 +120,11 @@ export const OpenAIProductJsonSchema = {
                         "risk_controls",
                         "claims_experience",
                         "differentiation",
+                        "explanation_insurer",
+                        "portfolio_fit",
+                        "risk_tradeoffs",
+                        "regulatory_notes",
+                        "growth_strategy",
                     ],
                     properties: {
                         product_name: { type: "string" },
@@ -146,6 +151,17 @@ export const OpenAIProductJsonSchema = {
                             items: { type: "string" },
                         },
                         differentiation: {
+                            type: "array",
+                            items: { type: "string" },
+                        },
+                        explanation_insurer: { type: "string" },
+                        portfolio_fit: { type: "string" },
+                        growth_strategy: { type: "string" },
+                        risk_tradeoffs: {
+                            type: "array",
+                            items: { type: "string" },
+                        },
+                        regulatory_notes: {
                             type: "array",
                             items: { type: "string" },
                         },

@@ -5,7 +5,7 @@ type Props = {
   setStep: (n: number) => void;
 };
 
-const steps = ["Vehicle", "Driver/Risk", "Competitor", "Results"];
+const steps = ["Portfolio", "Strategy", "Market", "Product"];
 
 export default function Stepper({ step, setStep }: Props) {
   return (

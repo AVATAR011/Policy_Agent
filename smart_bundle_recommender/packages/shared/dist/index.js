@@ -1,3 +1,3 @@
-export * from "./schemas";
-export * from "./openaiSchema";
-export * from "./prompts";
+export * from "./schemas.js";
+export * from "./openaiSchema.js";
+export * from "./prompts.js";

@@ -120,6 +120,11 @@ export const ProductSchema = z.object({
     risk_controls: z.array(z.string().min(1)).default([]),
     claims_experience: z.array(z.string().min(1)).default([]),
     differentiation: z.array(z.string().min(1)).default([]),
+    explanation_insurer: z.string().min(1),
+    portfolio_fit: z.string().min(1),
+    risk_tradeoffs: z.array(z.string().min(1)).default([]),
+    regulatory_notes: z.array(z.string().min(1)).default([]),
+    growth_strategy: z.string().min(1),
 });
 export const ProductResponseSchema = z.object({
     products: z.array(ProductSchema).min(1),
