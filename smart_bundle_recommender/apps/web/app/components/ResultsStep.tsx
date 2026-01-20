@@ -56,33 +56,6 @@ export default function ResultsStep({ payload, onBack }: Props) {
       const j = await res.json();
       if (!res.ok) throw new Error(j?.message || "Request failed");
       setData(j);
-      setData({
-      ...j,
-      products: [
-        {
-          product_name: "Urban Smart Protect",
-          positioning: "Mid-premium fast claims digital product",
-          target_segment: ["Metro private cars", "0–5 year vehicles"],
-          coverage: ["Comprehensive OD + TP"],
-          addons: ["Zero Dep", "Engine Protect", "RSA"],
-          pricing_strategy: "Value Plus",
-          risk_controls: ["Flood deductible"],
-          claims_experience: ["3 day TAT"],
-          differentiation: ["Faster claims than peers"],
-        },
-        {
-          product_name: "Metro Value Shield",
-          positioning: "Affordable urban protection plan",
-          target_segment: ["Compact cars"],
-          coverage: ["TP + Limited OD"],
-          addons: ["RSA"],
-          pricing_strategy: "Budget",
-          risk_controls: ["Higher deductible"],
-          claims_experience: ["5 day TAT"],
-          differentiation: ["Lower premium"],
-        },
-      ],
-    });
 
     } catch (e: any) {
       setErr(e?.message || "Failed");
