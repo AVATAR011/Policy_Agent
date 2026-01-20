@@ -1,7 +1,10 @@
 import OpenAI from "openai";
+import { buildProductPrompt } from "./productPrompt.js";
 import {
   OpenAIRecommendJsonSchema,
   RecommendResponseSchema,
+  OpenAIProductJsonSchema,
+  ProductResponseSchema,
 } from "@spr/shared";
 import { SYSTEM_PROMPT, buildUserPrompt } from "@spr/shared";
 import "dotenv/config";
@@ -11,26 +14,52 @@ const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function callOpenAI(args: {
   requestId: string;
-  lifecycle: "purchase" | "renewal";
-  vehicle: any;
-  customer_risk: any;
-  telematics: any;
-  competitor_gaps: any;
-  constraints: any;
+  mode: "bundle_recommendation" | "product_generation";
+
+  // bundle mode
+  lifecycle?: "purchase" | "renewal";
+  vehicle?: any;
+  customer_risk?: any;
+  telematics?: any;
+  competitor_gaps?: any;
+  constraints?: any;
+
+  // product mode
+  input?: any;
+
+  // shared
   candidates: any;
 }) {
+
   const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
 
-  const user = buildUserPrompt({
-    requestId: args.requestId,
-    lifecycle: args.lifecycle,
-    vehicle: args.vehicle,
-    customer_risk: args.customer_risk,
-    telematics: args.telematics,
-    competitor_gaps: args.competitor_gaps,
-    constraints: args.constraints,
-    candidates: args.candidates,
-  });
+  let userPrompt = "";
+  let schema: any;
+  let responseValidator: any;
+
+  if (args.mode === "bundle_recommendation") {
+    userPrompt = buildUserPrompt({
+      requestId: args.requestId,
+      lifecycle: args.lifecycle,
+      vehicle: args.vehicle,
+      customer_risk: args.customer_risk,
+      telematics: args.telematics,
+      competitor_gaps: args.competitor_gaps,
+      constraints: args.constraints,
+      candidates: args.candidates,
+    });
+
+    schema = OpenAIRecommendJsonSchema;
+    responseValidator = RecommendResponseSchema;
+  }
+
+  if (args.mode === "product_generation") {
+    userPrompt = buildProductPrompt(args.input, args.candidates);
+
+    schema = OpenAIProductJsonSchema;
+    responseValidator = ProductResponseSchema;
+  }
+
 
   const started = Date.now();
 
@@ -38,16 +67,17 @@ export async function callOpenAI(args: {
     model,
     input: [
       { role: "system", content: SYSTEM_PROMPT },
-      { role: "user", content: user },
+      { role: "user", content: userPrompt },
     ],
     text: {
       format: {
         type: "json_schema",
-        name: OpenAIRecommendJsonSchema.name, // ✅ REQUIRED
-        strict: true, // ✅ REQUIRED in many builds
-        schema: OpenAIRecommendJsonSchema.schema, // ✅ pass the schema itself
+        name: schema.name,
+        strict: true,
+        schema: schema.schema,
       },
     },
+
   });
 
   const latencyMs = Date.now() - started;
@@ -55,7 +85,8 @@ export async function callOpenAI(args: {
   const jsonText = resp.output_text; // SDK helper for Responses API :contentReference[oaicite:3]{index=3}
   const parsed = JSON.parse(jsonText);
 
-  const validated = RecommendResponseSchema.parse(parsed);
+  const validated = responseValidator.parse(parsed);
+
 
   const usage = (resp as any).usage;
   return { validated, latencyMs, usage };

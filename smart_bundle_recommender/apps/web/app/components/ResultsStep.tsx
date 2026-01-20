@@ -48,7 +48,7 @@ export default function ResultsStep({ payload, onBack }: Props) {
     setErr(null);
     setData(null);
     try {
-      const res = await fetch(`${apiBase}/recommend-bundles`, {
+      const res = await fetch(`${apiBase}/generate-product`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -56,6 +56,34 @@ export default function ResultsStep({ payload, onBack }: Props) {
       const j = await res.json();
       if (!res.ok) throw new Error(j?.message || "Request failed");
       setData(j);
+      setData({
+      ...j,
+      products: [
+        {
+          product_name: "Urban Smart Protect",
+          positioning: "Mid-premium fast claims digital product",
+          target_segment: ["Metro private cars", "0–5 year vehicles"],
+          coverage: ["Comprehensive OD + TP"],
+          addons: ["Zero Dep", "Engine Protect", "RSA"],
+          pricing_strategy: "Value Plus",
+          risk_controls: ["Flood deductible"],
+          claims_experience: ["3 day TAT"],
+          differentiation: ["Faster claims than peers"],
+        },
+        {
+          product_name: "Metro Value Shield",
+          positioning: "Affordable urban protection plan",
+          target_segment: ["Compact cars"],
+          coverage: ["TP + Limited OD"],
+          addons: ["RSA"],
+          pricing_strategy: "Budget",
+          risk_controls: ["Higher deductible"],
+          claims_experience: ["5 day TAT"],
+          differentiation: ["Lower premium"],
+        },
+      ],
+    });
+
     } catch (e: any) {
       setErr(e?.message || "Failed");
     } finally {
@@ -153,47 +181,96 @@ export default function ResultsStep({ payload, onBack }: Props) {
         </div>
       ) : null}
 
-      {data?.bundles ? (
+      {data?.products?.length ? (
         <div className="mt-6 grid gap-5 lg:grid-cols-3">
-          <BundleCard
-            title="Value Bundle"
-            badge="Best Value"
-            bundle={data.bundles.value}
-            onExplain={() => openExplain(data.bundles.value)}
-            onCompareToggle={() => toggleCompare("value")}
-            compareOn={!!compare.value}
-            onFeedback={(r) => feedback("value", r)}
-          />
-          <BundleCard
-            title="Protection+ Bundle"
-            badge="Max Protection"
-            bundle={data.bundles.protection_plus}
-            onExplain={() => openExplain(data.bundles.protection_plus)}
-            onCompareToggle={() => toggleCompare("protection_plus")}
-            compareOn={!!compare.protection_plus}
-            onFeedback={(r) => feedback("protection_plus", r)}
-          />
-          <BundleCard
-            title="Low Premium Bundle"
-            badge="Lowest Premium"
-            bundle={data.bundles.low_premium}
-            onExplain={() => openExplain(data.bundles.low_premium)}
-            onCompareToggle={() => toggleCompare("low_premium")}
-            compareOn={!!compare.low_premium}
-            onFeedback={(r) => feedback("low_premium", r)}
-          />
+          {data.products.map((product: any, idx: number) => (
+            <ProductCard
+              key={idx}
+              product={product}
+              onExplain={() => openExplain(product)}
+            />
+          ))}
         </div>
       ) : (
         <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950 p-6 text-sm text-slate-300">
-          Run the recommendation to see bundles.
+          Run the recommendation to generate product blueprints.
         </div>
       )}
+
 
       <ExplainDrawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         bundle={drawerBundle}
       />
+    </div>
+  );
+}
+
+function ProductCard({
+  product,
+  onExplain,
+}: {
+  product: any;
+  onExplain: () => void;
+}) {
+  return (
+    <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+      <div className="flex items-start justify-between">
+        <div>
+          <h3 className="text-sm font-extrabold">
+            {product.product_name}
+          </h3>
+          <p className="mt-1 text-xs text-slate-400">
+            {product.positioning}
+          </p>
+        </div>
+
+        <span className="rounded-lg bg-emerald-600/20 px-2 py-1 text-[11px] text-emerald-400">
+          Blueprint
+        </span>
+      </div>
+
+      <Section title="Target Segment" items={product.target_segment} />
+      <Section title="Coverage" items={product.coverage} />
+      <Section title="Add-ons" items={product.addons} />
+      <Section title="Risk Controls" items={product.risk_controls} />
+      <Section title="Claims Experience" items={product.claims_experience} />
+      <Section title="Differentiation" items={product.differentiation} />
+
+      <div className="mt-3 text-xs text-slate-400">
+        Pricing Strategy:{" "}
+        <b className="text-slate-200">{product.pricing_strategy}</b>
+      </div>
+
+      <button
+        onClick={onExplain}
+        className="mt-4 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-semibold hover:border-slate-600"
+      >
+        Explain →
+      </button>
+    </div>
+  );
+}
+
+function Section({ title, items }: any) {
+  if (!items?.length) return null;
+
+  return (
+    <div className="mt-3">
+      <div className="text-xs font-semibold text-slate-400">
+        {title}
+      </div>
+      <div className="mt-1 flex flex-wrap gap-1">
+        {items.map((i: string) => (
+          <span
+            key={i}
+            className="rounded-full border border-slate-700 bg-slate-800 px-2 py-0.5 text-[11px]"
+          >
+            {i}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

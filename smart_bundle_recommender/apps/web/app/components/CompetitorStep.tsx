@@ -15,7 +15,7 @@ type Props = {
   onNext: () => void;
 };
 
-export default function CompetitorStep({
+export default function MarketStep({
   value,
   onChange,
   onBack,
@@ -54,7 +54,7 @@ export default function CompetitorStep({
 
   return (
     <div>
-      <h2 className="text-lg font-extrabold">Competitor gaps</h2>
+      <h2 className="text-lg font-extrabold">Market Differentiation</h2>
       <p className="mt-1 text-sm text-slate-300">
         Add competitor bundle gaps to help differentiation.
       </p>

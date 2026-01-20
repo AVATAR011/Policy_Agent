@@ -12,5 +12,8 @@
     "typecheck": "pnpm -r typecheck",
     "docker:up": "docker compose up --build",
     "docker:down": "docker compose down -v"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13"
   }
 }

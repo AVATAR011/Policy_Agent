@@ -2,60 +2,36 @@
 
 import { useMemo, useState } from "react";
 import Stepper from "./components/Stepper";
-import VehicleStep from "./components/VehicleStep";
+import PortfolioStep from "./components/PortfolioStep";
+import StrategyStep from "./components/StrategyStep";
 import RiskStep from "./components/RiskStep";
-import CompetitorStep from "./components/CompetitorStep";
+import MarketStep from "./components/CompetitorStep"; 
 import ResultsStep from "./components/ResultsStep";
 
 export default function Page() {
   const [step, setStep] = useState(0);
 
-  const [vehicle, setVehicle] = useState<any>({
-    type: "car",
-    brand: "Hyundai",
-    model: "i20",
-    fuel_type: "petrol",
-    cc: 1197,
-    vehicle_age_years: 2,
-    idv_band: "medium",
-    city: "Chennai",
-    state: "Tamil Nadu",
-    pincode: "600001",
-    ownership: "1st",
-    usage: "private",
-    annual_km: 12000,
-  });
-
-  const [risk, setRisk] = useState<any>({
-    claim_count_3y: 0,
-    claim_types: [],
-    ncb_percent: 20,
-    violations_count_12m: 0,
-    last_claim_months_ago: 240,
-  });
-
-  const [telematics, setTelematics] = useState<any>({});
+  const [portfolio, setPortfolio] = useState<any>({});
+  const [strategy, setStrategy] = useState<any>({});
+  const [market, setMarket] = useState<any[]>([]);
   const [competitors, setCompetitors] = useState<any[]>([]);
-  const [constraints, setConstraints] = useState<any>({
-    budget_band: "medium",
-    must_have_addons: [],
-    excluded_addons: [],
-  });
+  const [constraints, setConstraints] = useState<any>({});
   const [lifecycle, setLifecycle] = useState<"purchase" | "renewal">(
     "purchase",
   );
 
   const payload = useMemo(
-    () => ({
-      lifecycle,
-      vehicle,
-      customer_risk: risk,
-      telematics,
-      competitor_gaps: competitors,
-      constraints,
-    }),
-    [lifecycle, vehicle, risk, telematics, competitors, constraints],
-  );
+  () => ({
+    generation_mode: "insurer_product_design",
+    lifecycle,
+    portfolio_context: portfolio,
+    business_strategy: strategy,
+    competitor_landscape: market,
+    product_constraints: constraints,
+  }),
+  [lifecycle, portfolio, strategy, market, constraints],
+);
+
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-50">
@@ -63,7 +39,7 @@ export default function Page() {
         <div className="flex items-start justify-between gap-6">
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight">
-              Smart Policy Bundle Recommender
+              Smart Insurer Product Generator
             </h1>
             <p className="mt-2 text-sm text-slate-300">
               Rules + Scoring + OpenAI narratives. Built for insurers.
@@ -89,35 +65,37 @@ export default function Page() {
 
         <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
           {step === 0 && (
-            <VehicleStep
-              value={vehicle}
-              onChange={setVehicle}
+            <PortfolioStep
+              value={portfolio}
+              onChange={setPortfolio}
               onNext={() => setStep(1)}
             />
           )}
+
           {step === 1 && (
-            <RiskStep
-              value={{ risk, telematics, constraints }}
-              onChange={({ risk, telematics, constraints }: any) => {
-                setRisk(risk);
-                setTelematics(telematics);
-                setConstraints(constraints);
-              }}
-              onBack={() => setStep(0)}
+            <StrategyStep
+              value={strategy}
+              onChange={setStrategy}
               onNext={() => setStep(2)}
             />
           )}
+
           {step === 2 && (
-            <CompetitorStep
-              value={competitors}
-              onChange={setCompetitors}
+            <MarketStep
+              value={market}
+              onChange={setMarket}
               onBack={() => setStep(1)}
               onNext={() => setStep(3)}
             />
           )}
+
           {step === 3 && (
-            <ResultsStep payload={payload} onBack={() => setStep(2)} />
+            <ResultsStep
+              payload={payload}
+              onBack={() => setStep(2)}
+            />
           )}
+
         </div>
       </div>
     </main>

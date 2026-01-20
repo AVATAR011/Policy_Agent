@@ -2,22 +2,16 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import rateLimit from "@fastify/rate-limit";
 import "dotenv/config";
-
 import { healthRoutes } from "./routes/health.js";
 import { recommendRoutes } from "./routes/recommend.js";
 import { feedbackRoutes } from "./routes/feedback.js";
 import { generateProductRoutes } from "./routes/generateProduct.js";
-
 const app = Fastify({ logger: true });
-
 await app.register(cors, { origin: true });
 await app.register(rateLimit, { max: 60, timeWindow: "1 minute" });
-
 await app.register(healthRoutes);
 await app.register(recommendRoutes);
 await app.register(feedbackRoutes);
 await app.register(generateProductRoutes);
-
-
 const port = Number(process.env.PORT || 8080);
 await app.listen({ port, host: "0.0.0.0" });
